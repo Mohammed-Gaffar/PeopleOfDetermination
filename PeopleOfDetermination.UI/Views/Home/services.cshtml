@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Core.Entities.Service>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div class="row" style="margin:15px;">
+    <h2 tabindex="0">الخدمات</h2>
+    @* <button style="background-color: transparent;
+    border: none;
+    display: inline-block;
+    text-align: start;
+    font-size: 2rem;">
+    الخدمات
+    </button> *@
+
+    <hr style="width:90%" />
+    <div class="row">
+    </div>
+
+
+
+    @foreach (var service in Model)
+    {
+        <div class="col-md-2" style="margin-bottom:20px;">
+
+            <div class="card mycard" style="border:1.5px solid;padding:5px;">
+
+                <div class="card card-header" style="box-shadow:inset  0px 2px 0px 0px #0d7078;border-radius: 5px">
+                    <a href="@service.Link" style="font-size:x-large">@service.Name</a>
+                </div>
+                <div>
+
+                    <p>
+                        @* @service.Description.Substring(0, Math.Min(service.Description.Length, 20)) ..... *@
+                        <a href="#" class="link" data-bs-toggle="collapse" data-bs-target="#collapseWidthID_@service.ID" aria-expanded="false" aria-controls="collapseWidthExample"> تفاصيل الخدمة  </a>
+                        <br />
+                        <div class="collapse mb-3" id="collapseWidthID_@service.ID">
+                            <p tabindex="0">@service.Description</p>
+                            <br />
+                        </div>
+                        <hr />
+                    </p>
+                    <a href="@service.Link" class="btn btn-primary" id="startbutton">بدأ الخدمة</a>
+                    <div class="collapse mb-3" id="collapseWidthID_@service.ID">
+                        @if (User.IsInRole("Admin") || User.IsInRole("Super_Admin"))
+                        {
+                            <hr />
+                            <a asp-action="Edit" asp-controller="Home" asp-route-id="@service.ID" class="btn btn-secondary" style="min-width:fit-content">تعديل</a>
+                            @if (service.IsActive == true)
+                            {
+                                <a asp-action="DeActive" asp-controller="Home" asp-route-id="@service.ID" class="btn btn-danger" style="min-width:fit-content">الغاء التفعيل</a>
+                            }
+                            else
+                            {
+                                <a asp-action="Active" asp-controller="Home" asp-route-id="@service.ID" class="btn btn-info" style="min-width:fit-content">  تفعيل</a>
+                            }
+                        }
+                    </div>
+                </div>
+                <!-- wrap button in a div -->
+            </div>
+        </div>
+    }
+
+</div>
+
+
+@section Scripts {
+<partial name="_NotificationPartial" />
+}

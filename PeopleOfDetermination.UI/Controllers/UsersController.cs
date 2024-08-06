@@ -1,0 +1,157 @@
+﻿//////////////////////////////////////////////////
+//Author    : Mohammed Gaffer Aidaab
+//For       : King Faisual University
+//Under     : ISB integrated sulution business Company
+//App       : PeopleOfDetermination Application (())
+//Date      : July - 2024 
+/////////////////////////////////////////////////////
+
+
+using Core.Entities;
+using Core.Interfaces;
+using Infrastructure.Context;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.Kestrel.Transport.NamedPipes;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Update;
+using PlayApp.Extentions;
+using ServiceReference1;
+namespace PlayApp.Controllers
+{
+    [Authorize]
+    public class UsersController : BaseController
+    {
+        private readonly DbConn _db;
+
+        private readonly IUser _IUser;
+
+        public UsersController(IUser user,DbConn dbConn)
+        {
+            _IUser = user;
+            _db = dbConn;
+        }
+
+        [Authorize(Roles = "Super_Admin,Admin")]
+        public IActionResult Index()
+        {
+            var Users = _IUser.GetAll();
+
+            return View(Users);
+        }
+
+        [Authorize(Roles ="Super_Admin")]
+        public IActionResult create()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Super_Admin")]
+        [HttpPost]
+        public async Task<IActionResult> Create(User user)
+        {
+
+            UsersManagerClient ManagerClient = new UsersManagerClient();
+            var checkuser = await ManagerClient.FindUserInActiveDirectoryAsync(user.UserName);
+
+            if(checkuser.Email != null && checkuser.UserName == user.UserName)
+            {
+                User createduser;
+
+                if (User.Identity.Name != null)
+                {
+                    createduser = await _IUser.GetByName(User.Identity.Name);
+
+                    if (ModelState.IsValid)
+                    {
+                        user.Create_At = DateTime.Now;
+                        user.Created_by = createduser.ID;
+                        BaseResponse res = await _IUser.Create(user);
+                        if (res.IsSuccess == true)
+                        {
+                            BasicNotification("تم اضافة المستخدم بنجاح", NotificationType.Success);
+                            return RedirectToAction(nameof(Index));
+                        }
+                        else
+                        {
+                            BasicNotification(res.Message, NotificationType.Error);
+                            return RedirectToAction(nameof(create), user);
+                        }
+                    }
+                    else
+                    {
+                        return View(user);
+                    }
+
+                }
+                else
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+
+            }
+            else
+            {
+                BasicNotification("هذا المستخدم غير متواجد في قاعد البانات الرجاء التحقق من اسم المستخدم", NotificationType.Warning);
+                return RedirectToAction(nameof(create), user);
+            }
+
+        }
+
+        [Authorize(Roles = "Super_Admin")]
+        public async Task<IActionResult> Edit(Guid Id)
+        {
+            var user  = await _IUser.GetById(Id);
+            return View(user);
+        }
+
+        [Authorize(Roles = "Super_Admin")]
+        [HttpPost]
+        public async Task<IActionResult> Edit(User user)
+        {
+            User updatedUser;
+            BaseResponse res; 
+
+            if (ModelState.IsValid)
+            {
+                 
+                if (User.Identity.Name != null )
+                {
+                    updatedUser = await _IUser.GetByName(User.Identity.Name);
+                }
+                else
+                {
+                    BasicNotification("يرجى التحقق من تسجيل الدخول", NotificationType.Info);
+                    return RedirectToAction(nameof(Index));
+                }
+                user.Updated_by = updatedUser.ID;
+                user.Update_At = DateTime.Now;
+                try
+                {
+                     res = await _IUser.Update(user);
+                }
+                catch (Exception ex)
+                {
+                    BasicNotification(ex.Message, NotificationType.Error);
+                    return RedirectToAction(nameof(Index));
+                }
+                
+
+                if (res.IsSuccess == true) {
+                    BasicNotification("تم تحديث البانات ", NotificationType.Info);
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    BasicNotification(res.Message, NotificationType.Error);
+                    return View(user);
+                }
+            }
+            else
+            {
+                BasicNotification("هنالك خطا الرجاء المحاولة مرة اخرى", NotificationType.Error);
+                return View(user);
+            }
+        }
+    }
+}

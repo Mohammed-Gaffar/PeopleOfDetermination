@@ -1,0 +1,128 @@
+﻿@model PeopleOfDetermination.UI.Dto.ServicesDTO
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+
+<div class="row" style="margin:15px;">
+    <h2 tabindex="0">Dashbord</h2>
+
+</div>
+
+
+<hr style="width:90%" />
+
+<div class="row" style="padding:2%">
+    
+        <div class="col-md-3">
+            <div class="card card-primary  hover-card" style="height:650px">
+                <div class="card-header bg-gold">
+                </div>
+
+                <div class="card-body bg-opacity-10 bg-black">
+                    <div class="dash-card center" style="height:80%;">
+                        
+                    </div>
+                    <br />
+                    <div class="text-center d-flex">
+                        <h2>اجمالي عدد الخدمات </h2>
+                        &emsp;&emsp;
+                        <h2>
+                            @Model.totoalServices
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-gold text-start">
+                    <a  asp-action="Services" asp-controller="Home" class="btn btn-primary">صفحة الخدمات</a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-3">
+            <div class="card hover-card">
+                <div class="card-body">
+                   <div class="row">
+                        <div class="col">
+                            <p class="text-success">
+                                <div class="mt-2 lead"><br />خدمات فعالة</div>
+                                <h2 class="card-title" style="font-size:1.8em;">@Model.ActiveServices</h2>
+                            </p>
+                        </div>
+                        <div class="col text-start" style="padding:0px">
+                            <i class="bi bi-check bi-2x p-3 bg-success" style="font-size:100px"></i>
+                        </div>
+                   </div>
+                </div>
+            </div>
+            <br />
+            <div class="card hover-card">
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col">
+                            <p class="text-success">
+                                <div class="mt-2 lead"><br />خدمات غير فعالة</div>
+                                <h2 class="card-title" style="font-size:1.8em;">@Model.DisableServices</h2>
+                            </p>
+                        </div>
+                        <div class="col text-start" style="padding:0px">
+                            <i class="bi bi-ban bi-2x p-3 bg-danger" style="font-size:100px"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-md-3">
+            <div class="card tilebox-one hover-card">
+                <div class="card-body" style="height:fit-content">
+                    <i class="dripicons-basket float-end text-muted"></i>
+                    <h6 class="text-muted text-uppercase mt-0">المستخدمين </h6>
+                    <i class="bi bi-people-fill" style="font-size:220px"></i>
+
+                    <h2>عدد المستخدمين</h2>
+                    <h2>@Model.TotalUsers</h2>
+
+                    <div class="text-start">
+                        <a asp-action="Index" asp-controller="Users" class="btn btn-primary">إدارة المستخدمين </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+
+
+        @* ========next use ================ *@
+      @*   <div class="col-md-3">
+        <a href="/Services/circulars/Display" class="cus_block r-shape">
+            <div class="block-content block-content-full">
+                <div class="row">
+                    <div class="col-xs-9 text-center" style="padding-top:15px">
+                        <div class="font-w700 h5 push-5-t">
+                            الإتصالات الإدارية
+                        </div>
+
+                    </div>
+                    <div class="col-xs-3">
+                        <span class="item item-circle bg-custom-light text-custom pull-right"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAACXBIWXMAAAsSAAALEgHS3X78AAAD7klEQVRogeWb33HaQBDGPzO8+1KBcQV2KjCuwE4FNhXEetQT5EmPwhXEVBBcQXAFgQ5CBREVkDmyx5zvJHO62ztpJr8ZT4huQPq0q9X+kc72+z26QGT5CMAYwIh5978BrKqykP9aJBdMQmcAHqxFXl4BPJnCkwoWWf4IYA7g3FqMw45EvyQXLLL8HsAPayENEyU6iWBy43VCy5pIS19L9x5YS3GYdSgWtG95KcW3sMhyAeCPtdANlyksPLa2dMc4heBra4s7bwC+APhUlcUZfX4N+L3R0NrUH7KqLOb60VRlsQSwpNvbd58jTRW02vJqitWhW8yzteBAXy38pD6ILL+mKC8oiVjTktz21frmCfpo4Y2RDq4A3AG4oc8HqrKo6BpvRaOFtZxXRtkLunnLHc6rslhZX+BjJK0qLUnXqn7/PldrvnurtTC50ZoS/Au1MzrTP0WWz6wv8SH3s6J9mIFpY4gVwYJJ7OpEZjQVWf5ibeUVPdX+L70r0+/p5IFX1jdP8M6lHcUqHkSWy2vp0VrhRYod17ix1wk/WrilWF10TEtbyFRVZPmSglhrDhamfLetWEVsS+vXtDTKfUghoiwcWpTHtrQ8tpKCaFDVNSDrcrRbHiJHbxYG5CJcyOgdozpa0F8wgwhdQ24rv8n4QDGidWZl0phpBeAVPT/ghjIucPz2MIKFY+BVCtZQDahx/b+wslJLBkI6EjE55OExBDcW7h1zqLG5BU8il46+PKvj4ryGJ/pIo0csqrI4dlC4BH/rodit7HKaOf6QCv2gH67KgiPZ2DKdfDUurTXAUPaGRJZvtc5GW5YMB/msu11MVNAKCTSVtcWdHbldErFgEuzLhiZ6HB7ijMqlQwTfexQMyVzY5GBh6gNvrFU3rk6UhHpQTO7CJnriURvVHHmhRoIFuewtdR2Tu7DJcT7MMMfdUHcxJIhF591AnPpSIe2e1qK12dGdtlkW+rMYaaqZS4cmEFfUYax1bxMq7H8ZYkGFfpQJxzvBFLxCe0dOoh1nvOwTjrpqieOsStHrpujdMDdqgrUFXPtQCx3Q1FrwY6Oln4Lu2z5p7IKj2V8rGP9Er32GVZEJFl3n0orYQzIfgt27UTBN6ybWQvcETTgaXVrBcG+Oxa3PfbrRwgq6ZljGHMx45eNOTbyeiq695Z3CuWvZQ9FeY9NWbdqeid5aWxxo3Zcm0X2I3l6FhVcjnjqCnwOaBqHsfFPg4OelmdNQF5qe6nEieNRCPenLRNd2kFhwPxEf+RWdYLGI9QoA1cKP9MdRgLCIRaJ3HtQbaGPtQdU2LOixYZZeWRdvpknryz6WPBEfPW4huy9L1qYggL+BJpRRPix5WQAAAABJRU5ErkJggg==" style="max-width:50px;max-height:30px"></span>
+                    </div>
+                </div>
+            </div>
+        </a>
+        </div> *@
+</div>
+
+
+
+@section Scripts {
+    <partial name="_NotificationPartial" />
+}

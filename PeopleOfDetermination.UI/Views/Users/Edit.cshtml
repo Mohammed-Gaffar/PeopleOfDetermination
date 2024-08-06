@@ -1,0 +1,37 @@
+﻿@model Core.Entities.User
+@using Core.Enums
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div style="justify-content:center;display:flex">
+    <div style="width:80%;margin:5%">
+        <div class="card">
+            <div class="card-header">
+                إضافة مستخدم
+            </div>
+            @using (Html.BeginForm("Edit", "Users", FormMethod.Post))
+            {
+                <div class="card-body">
+                    @Html.LabelFor(m => m.UserName, null, new { @class = "label-control" })
+                    @Html.TextBoxFor(m => m.UserName, null, new { @class = "form-control", autocomplete = "off", onkeypress = "return /[0-9a-zA-Z-ا-ي- -]/i.test(event.key)" })
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+
+                    <br />
+                    <select asp-for="Role" asp-items="@Html.GetEnumSelectList<Roles>()" class="form-select">
+                    </select>
+                    <span asp-validation-for="Role" class="text-danger"></span>
+                </div>
+
+                <div class="card-footer">
+                    <input type="submit" value="حفظ البيانات" class="btn btn-primary" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+

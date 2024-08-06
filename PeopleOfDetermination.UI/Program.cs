@@ -1,14 +1,12 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.EntityFrameworkCore;
-using PlayApp.Helpers2;
-using Synercoding.FormsAuthentication;
-using Infrastructure.Context;
-using Core.Interfaces;
-using Infrastructure.Repositories;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Identity;
 using Core.Entities;
+using Core.Interfaces;
+using Infrastructure.Context;
+using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+using PeopleOfDetermination.UI.Helpers2;
+using Synercoding.FormsAuthentication;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -68,8 +66,8 @@ builder.Services
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<IUser,UserRepository>();
-builder.Services.AddScoped<IServices,ServicesRepository>();
+builder.Services.AddScoped<IUser, UserRepository>();
+builder.Services.AddScoped<IServices, ServicesRepository>();
 
 
 

@@ -1,4 +1,4 @@
-namespace PlayApp.Models;
+namespace PeopleOfDetermination.UI.Models;
 
 public class ErrorViewModel
 {

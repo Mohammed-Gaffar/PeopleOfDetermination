@@ -9,7 +9,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace PlayApp.Extentions
+namespace PeopleOfDetermination.UI.Extentions
 {
     public enum NotificationType
     {

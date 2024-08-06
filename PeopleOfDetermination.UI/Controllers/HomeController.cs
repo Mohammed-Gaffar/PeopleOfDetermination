@@ -6,16 +6,16 @@
 //Date      : July - 2024 
 /////////////////////////////////////////////////////
 
-using System.Diagnostics;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PeopleOfDetermination.UI.Dto;
-using PlayApp.Extentions;
-using PlayApp.Models;
+using PeopleOfDetermination.UI.Extentions;
+using PeopleOfDetermination.UI.Models;
+using System.Diagnostics;
 
-namespace PlayApp.Controllers;
+namespace PeopleOfDetermination.UI.Controllers;
 
 public class HomeController : BaseController
 {
@@ -24,7 +24,7 @@ public class HomeController : BaseController
     private readonly IServices _services;
     private readonly IUser _user;
 
-    public HomeController(ILogger<HomeController> logger,IServices services, IUser user)
+    public HomeController(ILogger<HomeController> logger, IServices services, IUser user)
     {
         _logger = logger;
         _services = services;
@@ -66,14 +66,14 @@ public class HomeController : BaseController
         ServicesDTO info = new()
         {
             ActiveServices = await _services.ActiveServices(),
-            DisableServices = await _services.DeactiveServices(), 
-            TotalUsers = await _user.TotalUsers() ,
+            DisableServices = await _services.DeactiveServices(),
+            TotalUsers = await _user.TotalUsers(),
             totoalServices = await _services.totalServices(),
         };
 
         return View(info);
     }
-  
+
     [Authorize(Roles = "Super_Admin,Admin")]
     public IActionResult Create()
     {
@@ -135,7 +135,8 @@ public class HomeController : BaseController
     }
 
     [Authorize(Roles = "Super_Admin,Admin")]
-    public async Task<IActionResult>  Edit(Guid Id) {
+    public async Task<IActionResult> Edit(Guid Id)
+    {
         Service service = await _services.GetById(Id);
         return View(service);
     }

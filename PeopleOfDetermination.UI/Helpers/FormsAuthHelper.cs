@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Synercoding.FormsAuthentication;
 using System.Security.Claims;
-using Infrastructure.Repositories;
 
-namespace PlayApp.Helpers2
+namespace PeopleOfDetermination.UI.Helpers2
 {
     public class FormsAuthHelper
     {
@@ -72,7 +72,7 @@ namespace PlayApp.Helpers2
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
             identity.AddClaim(new Claim(ClaimTypes.Name, cookie.UserName));
 
-            StaticRepository _StaticRepository = new ();
+            StaticRepository _StaticRepository = new();
             var model = _StaticRepository.GetUserRole(cookie.UserName);
             if (model != null)
                 identity.AddClaim(new Claim(ClaimTypes.Role, model));
@@ -88,7 +88,7 @@ namespace PlayApp.Helpers2
 
         public static FormsAuthenticationCookie ConvertTicketToCookie(AuthenticationTicket ticket)
         {
-            var claimsIdentity  = (ClaimsIdentity)ticket.Principal.Identity;
+            var claimsIdentity = (ClaimsIdentity)ticket.Principal.Identity;
 
             var cookie = new FormsAuthenticationCookie()
             {
@@ -107,6 +107,6 @@ namespace PlayApp.Helpers2
         {
             return string.Equals(request.Query["X-Requested-With"], "XMLHttpRequest", StringComparison.Ordinal) ||
                    string.Equals(request.Headers["X-Requested-With"], "XMLHttpRequest", StringComparison.Ordinal);
-        }   
+        }
     }
 }
